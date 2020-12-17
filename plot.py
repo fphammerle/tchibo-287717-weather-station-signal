@@ -7,6 +7,7 @@ import typing
 
 import numpy
 import scipy.io.wavfile
+import scipy.ndimage
 from matplotlib import pyplot
 
 _LOGGER = logging.getLogger(__name__)
@@ -57,10 +58,16 @@ def _main():
     )
     argparser = argparse.ArgumentParser()
     argparser.add_argument("recording_paths", type=pathlib.Path, nargs="+")
+    argparser.add_argument("--plot-signal", action="store_true")
     args = argparser.parse_args()
     _LOGGER.debug("args=%r", args)
     for recording_path in args.recording_paths:
-        pyplot.plot(read_recording(recording_path), label=recording_path.name)
+        signal = read_recording(recording_path)
+        if args.plot_signal:
+            pyplot.plot(signal, label=recording_path.name)
+        threshold = (signal.min() + signal.max()) / 2
+        digitalized_signal = signal > threshold
+        pyplot.plot(digitalized_signal * signal.max() / 2, label=recording_path.name)
     pyplot.legend()
     pyplot.show()
 
