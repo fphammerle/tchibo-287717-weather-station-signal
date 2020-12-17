@@ -1,0 +1,4 @@
+[MESSAGES CONTROL]
+
+disable=bad-continuation,
+        consider-iterating-dictionary
