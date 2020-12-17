@@ -75,10 +75,18 @@ def _main():
             pyplot.plot(
                 digitalized_signal * signal.max() / 2, label=recording_path.name
             )
-        for bit, signal_group_iter in itertools.groupby(digitalized_signal):
+        for group_index, (bit, signal_group_iter) in enumerate(
+            itertools.groupby(digitalized_signal)
+        ):
             signal_group_length = sum(1 for _ in signal_group_iter)
-            bit_lengths[bit].append(signal_group_length)
-            assert not bit or signal_group_length < 30, signal_group_length
+            if group_index < 31:  # preamble
+                if group_index % 2 == 1:
+                    assert 16 <= signal_group_length <= 20, signal_group_length
+                elif group_index != 0:
+                    assert 375 <= signal_group_length <= 422, signal_group_length
+            else:
+                bit_lengths[bit].append(signal_group_length)
+                assert not bit or signal_group_length < 30, signal_group_length
     if args.plot_signal or args.plot_digitalized_signal:
         pyplot.legend()
         pyplot.figure()
