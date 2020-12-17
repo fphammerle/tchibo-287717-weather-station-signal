@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import itertools
 import logging
 import pathlib
 import typing
@@ -56,19 +57,34 @@ def _main():
         format="%(levelname)s:%(funcName)s:%(message)s",
         datefmt="%Y-%m-%dT%H:%M:%S%z",
     )
+    logging.getLogger("matplotlib.font_manager").setLevel(logging.INFO)
     argparser = argparse.ArgumentParser()
     argparser.add_argument("recording_paths", type=pathlib.Path, nargs="+")
     argparser.add_argument("--plot-signal", action="store_true")
+    argparser.add_argument("--plot-digitalized-signal", action="store_true")
     args = argparser.parse_args()
     _LOGGER.debug("args=%r", args)
+    bit_lengths = {False: [], True: []}
     for recording_path in args.recording_paths:
         signal = read_recording(recording_path)
         if args.plot_signal:
             pyplot.plot(signal, label=recording_path.name)
         threshold = (signal.min() + signal.max()) / 2
         digitalized_signal = signal > threshold
-        pyplot.plot(digitalized_signal * signal.max() / 2, label=recording_path.name)
-    pyplot.legend()
+        if args.plot_digitalized_signal:
+            pyplot.plot(
+                digitalized_signal * signal.max() / 2, label=recording_path.name
+            )
+        for bit, signal_group_iter in itertools.groupby(digitalized_signal):
+            signal_group_length = sum(1 for _ in signal_group_iter)
+            bit_lengths[bit].append(signal_group_length)
+            assert not bit or signal_group_length < 30, signal_group_length
+    if args.plot_signal or args.plot_digitalized_signal:
+        pyplot.legend()
+        pyplot.figure()
+    pyplot.hist(bit_lengths[True], bins=10)
+    pyplot.figure()
+    pyplot.hist(bit_lengths[False], bins=300)
     pyplot.show()
 
 
