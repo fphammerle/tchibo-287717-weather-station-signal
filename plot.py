@@ -45,7 +45,7 @@ def wavfile_read_mono(path):
     return rate, data_first_channel
 
 
-def read_recording(path: pathlib.Path) -> numpy.ndarray:
+def _read_recording(path: pathlib.Path) -> numpy.ndarray:
     rate, data = wavfile_read_mono(path)
     assert rate == 48000
     return trim_where(sequence=data, condition=data < 1000)
@@ -66,7 +66,7 @@ def _main():
     _LOGGER.debug("args=%r", args)
     bit_lengths = {False: [], True: []}
     for recording_path in args.recording_paths:
-        signal = read_recording(recording_path)
+        signal = _read_recording(recording_path)
         if args.plot_signal:
             pyplot.plot(signal, label=recording_path.name)
         threshold = (signal.min() + signal.max()) / 2
@@ -88,10 +88,23 @@ def _main():
             else:
                 signal_bit_lengths[bit].append(signal_group_length)
                 assert not bit or signal_group_length < 30, signal_group_length
+        assert min(signal_bit_lengths[False][:-1]) >= 96, signal_bit_lengths[False]
         assert signal_bit_lengths[False][-1] < 6, signal_bit_lengths[False][-1]
         for bit in bit_lengths.keys():
-            bit_lengths[bit].extend(signal_bit_lengths[bit][: None if bit else -1])
-        print(recording_path, signal_bit_lengths[False])
+            bit_lengths[bit].extend(signal_bit_lengths[bit])
+        assert len(signal_bit_lengths[False]) == 264
+        messages_low_bit_lengths = numpy.reshape(
+            numpy.array(signal_bit_lengths[False]), (6, 44)
+        )
+        assert (messages_low_bit_lengths.flatten()[:-1] >= 95).all()
+        assert (messages_low_bit_lengths[:, -2:].flatten()[:-1] >= 376).all()
+        assert (messages_low_bit_lengths[:, :-2] <= 201).all()
+        assert (
+            (messages_low_bit_lengths[:, :-2] <= 115)
+            | (messages_low_bit_lengths[:, :-2] >= 190)
+        ).all()
+        messages_data_bits = messages_low_bit_lengths[:, :-2] < 150
+        print(messages_data_bits)
     if args.plot_signal or args.plot_digitalized_signal:
         pyplot.legend()
         pyplot.figure()
