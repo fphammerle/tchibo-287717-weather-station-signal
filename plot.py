@@ -62,6 +62,7 @@ def _main():
     argparser.add_argument("recording_paths", type=pathlib.Path, nargs="+")
     argparser.add_argument("--plot-signal", action="store_true")
     argparser.add_argument("--plot-digitalized-signal", action="store_true")
+    argparser.add_argument("--plot-length-histograms", action="store_true")
     args = argparser.parse_args()
     _LOGGER.debug("args=%r", args)
     bit_lengths = {False: [], True: []}
@@ -104,14 +105,20 @@ def _main():
             | (messages_low_bit_lengths[:, :-2] >= 190)
         ).all()
         messages_data_bits = messages_low_bit_lengths[:, :-2] < 150
-        print(messages_data_bits)
+        assert all(
+            (messages_data_bits[0] == messages_data_bits[msg_idx]).all()
+            for msg_idx in range(1, messages_data_bits.shape[0])
+        )
+        print(recording_path.name, "".join(map(str, map(int, messages_data_bits[0]))))
     if args.plot_signal or args.plot_digitalized_signal:
         pyplot.legend()
+    if args.plot_length_histograms:
         pyplot.figure()
-    pyplot.hist(bit_lengths[True], bins=10)
-    pyplot.figure()
-    pyplot.hist(bit_lengths[False], bins=300)
-    pyplot.show()
+        pyplot.hist(bit_lengths[True], bins=10)
+        pyplot.figure()
+        pyplot.hist(bit_lengths[False], bins=300)
+    if args.plot_signal or args.plot_digitalized_signal or args.plot_length_histograms:
+        pyplot.show()
 
 
 if __name__ == "__main__":
