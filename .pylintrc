@@ -1,4 +1,5 @@
 [MESSAGES CONTROL]
 
 disable=bad-continuation,
-        consider-iterating-dictionary
+        consider-iterating-dictionary,
+        missing-docstring

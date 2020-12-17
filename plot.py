@@ -90,7 +90,6 @@ def _main():
                 signal_bit_lengths[bit].append(signal_group_length)
                 assert not bit or signal_group_length < 30, signal_group_length
         assert min(signal_bit_lengths[False][:-1]) >= 96, signal_bit_lengths[False]
-        assert signal_bit_lengths[False][-1] < 6, signal_bit_lengths[False][-1]
         for bit in bit_lengths.keys():
             bit_lengths[bit].extend(signal_bit_lengths[bit])
         assert len(signal_bit_lengths[False]) == 264
