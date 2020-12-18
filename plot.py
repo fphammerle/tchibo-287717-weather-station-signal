@@ -87,13 +87,13 @@ def _main():
             signal_group_length = sum(1 for _ in signal_group_iter)
             if group_index < 31:  # preamble
                 if group_index % 2 == 1:
-                    assert 15 <= signal_group_length <= 29, signal_group_length
+                    assert 15 <= signal_group_length <= 33, signal_group_length
                 elif group_index != 0:
-                    assert 369 <= signal_group_length <= 435, signal_group_length
+                    assert 362 <= signal_group_length <= 435, signal_group_length
             else:
                 signal_bit_lengths[bit].append(signal_group_length)
-                assert not bit or signal_group_length < 35, signal_group_length
-        assert min(signal_bit_lengths[False][:-1]) >= 90, signal_bit_lengths[False]
+                assert not bit or signal_group_length <= 36, signal_group_length
+        assert min(signal_bit_lengths[False][:-1]) >= 85, min(signal_bit_lengths[False])
         for bit in bit_lengths.keys():
             bit_lengths[bit].extend(signal_bit_lengths[bit])
         assert len(signal_bit_lengths[False]) == 264
@@ -101,17 +101,17 @@ def _main():
             numpy.array(signal_bit_lengths[False]), (6, 44)
         )
         assert (
-            messages_low_bit_lengths.flatten()[:-1] >= 90
+            messages_low_bit_lengths.flatten()[:-1] >= 85
         ).all(), messages_low_bit_lengths.flatten()[:-1].min()
         assert (
-            messages_low_bit_lengths[:, -2:].flatten()[:-1] >= 372
-        ).all(), messages_low_bit_lengths[:, -2:]
+            messages_low_bit_lengths[:, -2:].flatten()[:-1] >= 365
+        ).all(), messages_low_bit_lengths[:, -2:].min()
         assert (
             messages_low_bit_lengths[:, :-2] <= 215
         ).all(), messages_low_bit_lengths[:, :-2].max()
         assert (
             (messages_low_bit_lengths[:, :-2] <= 118)
-            | (messages_low_bit_lengths[:, :-2] >= 188)
+            | (messages_low_bit_lengths[:, :-2] >= 182)
         ).all(), messages_low_bit_lengths[:, :-2]
         messages_data_bits = messages_low_bit_lengths[:, :-2] > 150
         assert all(
