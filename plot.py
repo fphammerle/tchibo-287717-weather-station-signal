@@ -92,7 +92,7 @@ def _main():
                     assert 375 <= signal_group_length <= 435, signal_group_length
             else:
                 signal_bit_lengths[bit].append(signal_group_length)
-                assert not bit or signal_group_length < 31, signal_group_length
+                assert not bit or signal_group_length < 35, signal_group_length
         assert min(signal_bit_lengths[False][:-1]) >= 93, signal_bit_lengths[False]
         for bit in bit_lengths.keys():
             bit_lengths[bit].extend(signal_bit_lengths[bit])
@@ -118,7 +118,12 @@ def _main():
             (messages_data_bits[0] == messages_data_bits[msg_idx]).all()
             for msg_idx in range(1, messages_data_bits.shape[0])
         )
-        recording_displayed_values = displayed_values.get(recording_path.name, {})
+        displayed_temperature_degrees_celsius = displayed_values.get(
+            recording_path.name, {}
+        ).get("temperature_degrees_celsius")
+        displayed_relative_humidity = displayed_values.get(recording_path.name, {}).get(
+            "relative_humidity"
+        )
         print(
             recording_path.name.split(".", maxsplit=1)[0],
             "".join(map(str, map(int, messages_data_bits[0, :10]))),
@@ -128,8 +133,10 @@ def _main():
             + 16,  # humidity
             "".join(map(str, map(int, messages_data_bits[0, 30:35]))),
             "".join(map(str, map(int, messages_data_bits[0, 35:]))),  # checksum?
-            recording_displayed_values.get("temperature_degrees_celsius"),
-            recording_displayed_values.get("relative_humidity"),
+            displayed_temperature_degrees_celsius,
+            "{:.0f}%".format(displayed_relative_humidity * 100)
+            if displayed_relative_humidity
+            else None,
         )
     if args.plot_signal or args.plot_digitalized_signal:
         pyplot.legend()

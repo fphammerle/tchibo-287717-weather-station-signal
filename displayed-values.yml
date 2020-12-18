@@ -82,3 +82,18 @@ gqrx_20201218_140210_433790000.silences-shortened-0.1s.wav:
 gqrx_20201218_140711_433790000.silences-shortened-0.1s.wav:
   temperature_degrees_celsius: 21.5
   relative_humidity: 0.65
+gqrx_20201218_141204_433790000.silences-shortened-0.1s.wav:
+  temperature_degrees_celsius: 21.6
+  relative_humidity: 0.64
+gqrx_20201218_141704_433790000.silences-shortened-0.1s.wav:
+  temperature_degrees_celsius: 21.9
+  relative_humidity: 0.63
+gqrx_20201218_142207_433790000.silences-shortened-0.1s.wav:
+  temperature_degrees_celsius: 21.9
+  relative_humidity: 0.62
+gqrx_20201218_142734_433790000.silences-shortened-0.1s.wav:
+  temperature_degrees_celsius: 21.9
+  relative_humidity: 0.61
+gqrx_20201218_143214_433790000.silences-shortened-0.1s.wav:
+  temperature_degrees_celsius: 22.2
+  relative_humidity: 0.60
