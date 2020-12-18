@@ -2,6 +2,7 @@
 
 import argparse
 import itertools
+import json
 import logging
 import pathlib
 import typing
@@ -13,6 +14,8 @@ import scipy.ndimage
 import yaml
 
 _LOGGER = logging.getLogger(__name__)
+
+_MESSAGES_OUTPUT_PATH = pathlib.Path(__file__).parent.joinpath("messages.json")
 
 # https://git.hammerle.me/fphammerle/config-ipython/src/3dc22bb705f2c18179413a682f73ae95148634fe/profile_default/startup/init.py#L6
 def trim_where(
@@ -70,6 +73,10 @@ def _main():
         pathlib.Path(__file__).parent.joinpath("displayed-values.yml").read_text()
     )
     bit_lengths = {False: [], True: []}
+    try:
+        recordings_message_data_bits = json.loads(_MESSAGES_OUTPUT_PATH.read_text())
+    except FileNotFoundError:
+        recordings_message_data_bits = {}
     for recording_path in args.recording_paths:
         signal = _read_recording(recording_path)
         if args.plot_signal:
@@ -114,6 +121,9 @@ def _main():
             | (messages_low_bit_lengths[:, :-2] >= 182)
         ).all(), messages_low_bit_lengths[:, :-2]
         messages_data_bits = messages_low_bit_lengths[:, :-2] > 150
+        recordings_message_data_bits[recording_path.name] = list(
+            map(int, messages_data_bits[0])
+        )
         assert all(
             (messages_data_bits[0] == messages_data_bits[msg_idx]).all()
             for msg_idx in range(1, messages_data_bits.shape[0])
@@ -149,6 +159,7 @@ def _main():
             if displayed_relative_humidity
             else None,
         )
+    _MESSAGES_OUTPUT_PATH.write_text(json.dumps(recordings_message_data_bits))
     if args.plot_signal or args.plot_digitalized_signal:
         pyplot.legend()
     if args.plot_length_histograms:
