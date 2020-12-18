@@ -87,20 +87,22 @@ def _main():
             signal_group_length = sum(1 for _ in signal_group_iter)
             if group_index < 31:  # preamble
                 if group_index % 2 == 1:
-                    assert 15 <= signal_group_length <= 26, signal_group_length
+                    assert 15 <= signal_group_length <= 29, signal_group_length
                 elif group_index != 0:
                     assert 375 <= signal_group_length <= 435, signal_group_length
             else:
                 signal_bit_lengths[bit].append(signal_group_length)
                 assert not bit or signal_group_length < 31, signal_group_length
-        assert min(signal_bit_lengths[False][:-1]) >= 95, signal_bit_lengths[False]
+        assert min(signal_bit_lengths[False][:-1]) >= 93, signal_bit_lengths[False]
         for bit in bit_lengths.keys():
             bit_lengths[bit].extend(signal_bit_lengths[bit])
         assert len(signal_bit_lengths[False]) == 264
         messages_low_bit_lengths = numpy.reshape(
             numpy.array(signal_bit_lengths[False]), (6, 44)
         )
-        assert (messages_low_bit_lengths.flatten()[:-1] >= 95).all()
+        assert (
+            messages_low_bit_lengths.flatten()[:-1] >= 93
+        ).all(), messages_low_bit_lengths.flatten()[:-1].min()
         assert (
             messages_low_bit_lengths[:, -2:].flatten()[:-1] >= 375
         ).all(), messages_low_bit_lengths[:, -2:]
