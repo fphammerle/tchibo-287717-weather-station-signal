@@ -37,3 +37,9 @@ gqrx_20201218_114140_433790000.silences-shortened-0.1s.wav:
 gqrx_20201218_121853_433790000.silences-shortened-0.1s.wav:
   temperature_degrees_celsius: 1.6
   relative_humidity: 0.81
+gqrx_20201218_124045_433790000.silences-shortened-0.1s.wav:
+  temperature_degrees_celsius: 1.5
+  relative_humidity: 0.82
+gqrx_20201218_124228_433790000.silences-shortened-0.1s.wav:
+  temperature_degrees_celsius: 1.3
+  relative_humidity: 0.82

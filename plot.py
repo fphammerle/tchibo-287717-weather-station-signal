@@ -89,7 +89,7 @@ def _main():
                 if group_index % 2 == 1:
                     assert 15 <= signal_group_length <= 21, signal_group_length
                 elif group_index != 0:
-                    assert 375 <= signal_group_length <= 423, signal_group_length
+                    assert 375 <= signal_group_length <= 424, signal_group_length
             else:
                 signal_bit_lengths[bit].append(signal_group_length)
                 assert not bit or signal_group_length < 30, signal_group_length
@@ -105,7 +105,7 @@ def _main():
             messages_low_bit_lengths[:, -2:].flatten()[:-1] >= 375
         ).all(), messages_low_bit_lengths[:, -2:]
         assert (
-            messages_low_bit_lengths[:, :-2] <= 207
+            messages_low_bit_lengths[:, :-2] <= 208
         ).all(), messages_low_bit_lengths[:, :-2]
         assert (
             (messages_low_bit_lengths[:, :-2] <= 115)
