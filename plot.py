@@ -139,7 +139,7 @@ def _main():
             "".join(map(str, map(int, messages_data_bits[0, 22:30]))),
             "".join(map(str, map(int, messages_data_bits[0, 30:35]))),
             "".join(map(str, map(int, messages_data_bits[0, 35:]))),  # checksum?
-            "{:.1f}".format(displayed_temperature_degrees_celsius).rjust(4)
+            "{:.1f}°C".format(displayed_temperature_degrees_celsius).rjust(6)
             if displayed_temperature_degrees_celsius
             else None,
             "{:.0f}%".format(displayed_relative_humidity * 100)
