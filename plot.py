@@ -105,7 +105,7 @@ def _main():
             messages_low_bit_lengths[:, -2:].flatten()[:-1] >= 375
         ).all(), messages_low_bit_lengths[:, -2:]
         assert (
-            messages_low_bit_lengths[:, :-2] <= 203
+            messages_low_bit_lengths[:, :-2] <= 207
         ).all(), messages_low_bit_lengths[:, :-2]
         assert (
             (messages_low_bit_lengths[:, :-2] <= 115)
