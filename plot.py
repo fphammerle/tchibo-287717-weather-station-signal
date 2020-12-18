@@ -116,15 +116,17 @@ def _main():
             (messages_data_bits[0] == messages_data_bits[msg_idx]).all()
             for msg_idx in range(1, messages_data_bits.shape[0])
         )
+        recording_displayed_values = displayed_values.get(recording_path.name, {})
         print(
             recording_path.name.split(".", maxsplit=1)[0],
             "".join(map(str, map(int, messages_data_bits[0, :10]))),
-            "".join(map(str, map(int, messages_data_bits[0, 10:23]))),  # temp?
-            (numpy.packbits(messages_data_bits[0, 23:30], bitorder="big") >> 1) + 16,
-            "".join(map(str, map(int, messages_data_bits[0, 23:30]))),  # humidity?
+            "".join(map(str, map(int, messages_data_bits[0, 10:22]))),  # temp?
+            numpy.packbits(messages_data_bits[0, 22:30], bitorder="big") + 16,
+            "".join(map(str, map(int, messages_data_bits[0, 22:30]))),  # humidity
             "".join(map(str, map(int, messages_data_bits[0, 30:35]))),
             "".join(map(str, map(int, messages_data_bits[0, 35:]))),
-            displayed_values.get(recording_path.name),
+            recording_displayed_values.get("temperature_degrees_celsius"),
+            recording_displayed_values.get("relative_humidity"),
         )
     if args.plot_signal or args.plot_digitalized_signal:
         pyplot.legend()
