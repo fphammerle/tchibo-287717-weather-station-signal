@@ -87,7 +87,7 @@ def _main():
             signal_group_length = sum(1 for _ in signal_group_iter)
             if group_index < 31:  # preamble
                 if group_index % 2 == 1:
-                    assert 15 <= signal_group_length <= 20, signal_group_length
+                    assert 15 <= signal_group_length <= 21, signal_group_length
                 elif group_index != 0:
                     assert 375 <= signal_group_length <= 423, signal_group_length
             else:
