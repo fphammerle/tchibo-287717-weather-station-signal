@@ -111,14 +111,18 @@ def _main():
             (messages_low_bit_lengths[:, :-2] <= 115)
             | (messages_low_bit_lengths[:, :-2] >= 190)
         ).all()
-        messages_data_bits = messages_low_bit_lengths[:, :-2] < 150
+        messages_data_bits = messages_low_bit_lengths[:, :-2] > 150
         assert all(
             (messages_data_bits[0] == messages_data_bits[msg_idx]).all()
             for msg_idx in range(1, messages_data_bits.shape[0])
         )
         print(
-            recording_path.name,
-            "".join(map(str, map(int, messages_data_bits[0]))),
+            recording_path.name.split(".", maxsplit=1)[0],
+            "".join(map(str, map(int, messages_data_bits[0, :10]))),
+            "".join(map(str, map(int, messages_data_bits[0, 10:27]))),  # temp?
+            "".join(map(str, map(int, messages_data_bits[0, 27:30]))),  # humidity?
+            "".join(map(str, map(int, messages_data_bits[0, 30:35]))),
+            "".join(map(str, map(int, messages_data_bits[0, 35:]))),
             displayed_values.get(recording_path.name),
         )
     if args.plot_signal or args.plot_digitalized_signal:
