@@ -49,3 +49,21 @@ gqrx_20201218_124732_433790000.silences-shortened-0.1s.wav:
 gqrx_20201218_125222_433790000.silences-shortened-0.1s.wav:
   temperature_degrees_celsius: 1.1
   relative_humidity: 0.81
+gqrx_20201218_131736_433790000.silences-shortened-0.1s.wav:
+  temperature_degrees_celsius: 8.6
+  relative_humidity: 0.92 # out of range?
+gqrx_20201218_132214_433790000.silences-shortened-0.1s.wav:
+  temperature_degrees_celsius: 12.3
+  relative_humidity: 0.87
+gqrx_20201218_132713_433790000.silences-shortened-0.1s.wav:
+  temperature_degrees_celsius: 15.1
+  relative_humidity: 0.79
+gqrx_20201218_133213_433790000.silences-shortened-0.1s.wav:
+  temperature_degrees_celsius: 16.9
+  relative_humidity: 0.78
+gqrx_20201218_133711_433790000.silences-shortened-0.1s.wav:
+  temperature_degrees_celsius: 18.2
+  relative_humidity: 0.78
+gqrx_20201218_134211_433790000.silences-shortened-0.1s.wav:
+  temperature_degrees_celsius: 19.2
+  relative_humidity: 0.79
