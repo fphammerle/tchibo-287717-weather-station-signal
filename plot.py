@@ -119,8 +119,9 @@ def _main():
         print(
             recording_path.name.split(".", maxsplit=1)[0],
             "".join(map(str, map(int, messages_data_bits[0, :10]))),
-            "".join(map(str, map(int, messages_data_bits[0, 10:27]))),  # temp?
-            "".join(map(str, map(int, messages_data_bits[0, 27:30]))),  # humidity?
+            "".join(map(str, map(int, messages_data_bits[0, 10:23]))),  # temp?
+            (numpy.packbits(messages_data_bits[0, 23:30], bitorder="big") >> 1) + 16,
+            "".join(map(str, map(int, messages_data_bits[0, 23:30]))),  # humidity?
             "".join(map(str, map(int, messages_data_bits[0, 30:35]))),
             "".join(map(str, map(int, messages_data_bits[0, 35:]))),
             displayed_values.get(recording_path.name),
