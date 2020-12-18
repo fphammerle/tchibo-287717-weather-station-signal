@@ -6,10 +6,11 @@ import logging
 import pathlib
 import typing
 
+from matplotlib import pyplot
 import numpy
 import scipy.io.wavfile
 import scipy.ndimage
-from matplotlib import pyplot
+import yaml
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -65,6 +66,9 @@ def _main():
     argparser.add_argument("--plot-length-histograms", action="store_true")
     args = argparser.parse_args()
     _LOGGER.debug("args=%r", args)
+    displayed_values = yaml.safe_load(
+        pathlib.Path(__file__).parent.joinpath("displayed-values.yml").read_text()
+    )
     bit_lengths = {False: [], True: []}
     for recording_path in args.recording_paths:
         signal = _read_recording(recording_path)
@@ -97,7 +101,9 @@ def _main():
             numpy.array(signal_bit_lengths[False]), (6, 44)
         )
         assert (messages_low_bit_lengths.flatten()[:-1] >= 95).all()
-        assert (messages_low_bit_lengths[:, -2:].flatten()[:-1] >= 376).all()
+        assert (
+            messages_low_bit_lengths[:, -2:].flatten()[:-1] >= 375
+        ).all(), messages_low_bit_lengths[:, -2:]
         assert (
             messages_low_bit_lengths[:, :-2] <= 203
         ).all(), messages_low_bit_lengths[:, :-2]
@@ -110,7 +116,11 @@ def _main():
             (messages_data_bits[0] == messages_data_bits[msg_idx]).all()
             for msg_idx in range(1, messages_data_bits.shape[0])
         )
-        print(recording_path.name, "".join(map(str, map(int, messages_data_bits[0]))))
+        print(
+            recording_path.name,
+            "".join(map(str, map(int, messages_data_bits[0]))),
+            displayed_values.get(recording_path.name),
+        )
     if args.plot_signal or args.plot_digitalized_signal:
         pyplot.legend()
     if args.plot_length_histograms:
