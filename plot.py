@@ -138,6 +138,11 @@ def _main():
         temperature_guess, = numpy.packbits(
             messages_data_bits[0, 22:26], bitorder="big"
         ) | (numpy.packbits(messages_data_bits[0, 18:22], bitorder="big") >> 4)
+        temperature_guess <<= 8
+        temperature_guess |= (
+            numpy.packbits(messages_data_bits[0, 14:18], bitorder="big")
+            | (numpy.packbits(messages_data_bits[0, 10:14], bitorder="big") >> 4)
+        )[0]
         relative_humidity_percent, = numpy.packbits(
             messages_data_bits[0, 30:34], bitorder="big"
         ) | (numpy.packbits(messages_data_bits[0, 26:30], bitorder="big") >> 4)
