@@ -162,7 +162,7 @@ def _main():
             "".join(map(str, map(int, messages_data_bits[0, 10:14]))),
             "{:.1f}°C".format(temperature_degrees_celsius),
             "{:.0f}%".format(relative_humidity_percent).rjust(4),
-            "".join(map(str, map(int, messages_data_bits[0, 30:]))),  # checksum?
+            "".join(map(str, map(int, messages_data_bits[0, 34:]))),  # checksum?
             "{:.1f}°C".format(displayed_temperature_degrees_celsius).rjust(6)
             if displayed_temperature_degrees_celsius
             else None,
