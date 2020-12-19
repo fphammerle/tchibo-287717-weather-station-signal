@@ -138,17 +138,16 @@ def _main():
         temperature_index, = numpy.packbits(
             messages_data_bits[0, 22:26], bitorder="big"
         ) | (numpy.packbits(messages_data_bits[0, 18:22], bitorder="big") >> 4)
-        temperature_index <<= 8
+        temperature_index <<= 4
         temperature_index |= (
-            numpy.packbits(messages_data_bits[0, 14:18], bitorder="big")
-            | (numpy.packbits(messages_data_bits[0, 10:14], bitorder="big") >> 4)
+            numpy.packbits(messages_data_bits[0, 14:18], bitorder="big") >> 4
         )[0]
         temperature_degrees_celsius = (
-            temperature_index * 0.0034720698017944576 - 67.78773345783796
+            temperature_index * 0.055601938800118336 - 67.83753671810342
         )
         assert not displayed_temperature_degrees_celsius or (
             abs(temperature_degrees_celsius - displayed_temperature_degrees_celsius)
-            < 0.07
+            < 0.049
         )
         relative_humidity_percent, = numpy.packbits(
             messages_data_bits[0, 30:34], bitorder="big"
@@ -160,7 +159,7 @@ def _main():
         print(
             recording_path.name.split(".", maxsplit=1)[0],
             "".join(map(str, map(int, messages_data_bits[0, :10]))),
-            "".join(map(str, map(int, messages_data_bits[0, 10:26]))),  # temp?
+            "".join(map(str, map(int, messages_data_bits[0, 10:14]))),
             "{:.1f}°C".format(temperature_degrees_celsius),
             "{:.0f}%".format(relative_humidity_percent).rjust(4),
             "".join(map(str, map(int, messages_data_bits[0, 30:]))),  # checksum?
