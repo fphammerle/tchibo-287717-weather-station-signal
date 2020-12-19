@@ -15,6 +15,9 @@ import yaml
 
 _LOGGER = logging.getLogger(__name__)
 
+_DISPLAYED_VALUES_INPUT_PATH = pathlib.Path(__file__).parent.joinpath(
+    "displayed-values.yml"
+)
 _MESSAGES_OUTPUT_PATH = pathlib.Path(__file__).parent.joinpath("messages.json")
 
 # https://git.hammerle.me/fphammerle/config-ipython/src/3dc22bb705f2c18179413a682f73ae95148634fe/profile_default/startup/init.py#L6
@@ -69,9 +72,7 @@ def _main():
     argparser.add_argument("--plot-length-histograms", action="store_true")
     args = argparser.parse_args()
     _LOGGER.debug("args=%r", args)
-    displayed_values = yaml.safe_load(
-        pathlib.Path(__file__).parent.joinpath("displayed-values.yml").read_text()
-    )
+    displayed_values = yaml.safe_load(_DISPLAYED_VALUES_INPUT_PATH.read_text())
     bit_lengths = {False: [], True: []}
     try:
         recordings_message_data_bits = json.loads(_MESSAGES_OUTPUT_PATH.read_text())
@@ -134,12 +135,13 @@ def _main():
         displayed_relative_humidity = displayed_values.get(recording_path.name, {}).get(
             "relative_humidity"
         )
-        relative_humidity_percent, = (
-            numpy.packbits(messages_data_bits[0, 22:30], bitorder="big") + 16
+        relative_humidity_percent, = numpy.packbits(
+            messages_data_bits[0, 30:34], bitorder="big"
+        ) | (numpy.packbits(messages_data_bits[0, 26:30], bitorder="big") >> 4)
+        assert (
+            not displayed_relative_humidity
+            or (int(displayed_relative_humidity * 100)) == relative_humidity_percent
         )
-        assert not displayed_relative_humidity or (
-            int(displayed_relative_humidity * 100) & 0b1111
-        ) == (relative_humidity_percent & 0b1111)
         print(
             recording_path.name.split(".", maxsplit=1)[0],
             "".join(map(str, map(int, messages_data_bits[0, :10]))),
