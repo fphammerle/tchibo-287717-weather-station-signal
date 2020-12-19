@@ -1,11 +1,12 @@
-# Tchibo 287717 Wireless Thermo-/Hygrometer Signal Decoding
+# Tchibo 287717 Weather Station Signal Decoding
 
 ## Product Details
 
 - **Name**: Tchibo Funk-Wetterstation
 - **Model**: 287717
 - **Frequency** (indicated): 434MHz
-- powered by two 1.5V AAA batteries
+- Powered by two 1.5V AAA batteries
+- Contains thermometer and hygrometer
 
 ## Signal
 
