@@ -48,7 +48,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: datetime.datetime.now().astimezone().strftime("%Y%m%dT%M%H%S%z") + "_magnitude-squared.wav"
+    value: datetime.datetime.now().astimezone().strftime("%Y%m%dT%M%H%S%z") + "_magnitude-squared_pcm_16bit.wav"
   states:
     bus_sink: false
     bus_source: false
