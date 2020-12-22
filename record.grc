@@ -32,6 +32,18 @@ options:
     state: enabled
 
 blocks:
+- name: decimation
+  id: variable
+  parameters:
+    comment: ''
+    value: '100'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [938, 93]
+    rotation: 0
+    state: true
 - name: frequency_hertz
   id: variable
   parameters:
@@ -41,7 +53,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [927, 83]
+    coordinate: [587, 139]
     rotation: 0
     state: true
 - name: iq_output_filename
@@ -65,7 +77,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [583, 84]
+    coordinate: [574, 38]
     rotation: 0
     state: enabled
 - name: wav_output_filename
@@ -97,7 +109,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [873, 425]
+    coordinate: [863, 433]
     rotation: 0
     state: enabled
 - name: blocks_complex_to_mag_squared_0
@@ -113,9 +125,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1278, 592]
+    coordinate: [1711, 653]
     rotation: 0
-    state: true
+    state: enabled
 - name: blocks_file_sink_0
   id: blocks_file_sink
   parameters:
@@ -131,7 +143,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1443, 403]
+    coordinate: [1373, 264]
     rotation: 0
     state: enabled
 - name: blocks_file_source_0
@@ -146,14 +158,14 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     offset: '0'
-    repeat: 'False'
+    repeat: 'True'
     type: complex
     vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [755, 610]
+    coordinate: [746, 627]
     rotation: 0
     state: disabled
 - name: blocks_wavfile_sink_0
@@ -165,14 +177,14 @@ blocks:
     comment: ''
     file: wav_output_filename
     nchan: '1'
-    samp_rate: sample_rate_hertz
+    samp_rate: int(sample_rate_hertz / decimation)
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1540, 683]
+    coordinate: [1973, 744]
     rotation: 0
-    state: true
+    state: enabled
 - name: import_0
   id: import
   parameters:
@@ -186,6 +198,30 @@ blocks:
     coordinate: [1224, 46]
     rotation: 0
     state: true
+- name: low_pass_filter_0_0
+  id: low_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: ''
+    cutoff_freq: '10000'
+    decim: decimation
+    gain: '10'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: sample_rate_hertz
+    type: fir_filter_ccf
+    width: '1000'
+    win: firdes.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1301, 466]
+    rotation: 0
+    state: enabled
 - name: qtgui_time_sink_x_0
   id: qtgui_time_sink_x
   parameters:
@@ -241,8 +277,8 @@ blocks:
     marker9: '-1'
     name: '""'
     nconnections: '1'
-    size: sample_rate_hertz
-    srate: sample_rate_hertz
+    size: int(sample_rate_hertz / decimation)
+    srate: sample_rate_hertz / decimation
     stemplot: 'False'
     style1: '1'
     style10: '1'
@@ -280,9 +316,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1541, 544]
+    coordinate: [1974, 605]
     rotation: 0
-    state: true
+    state: enabled
 - name: qtgui_waterfall_sink_x_0
   id: qtgui_waterfall_sink_x
   parameters:
@@ -343,7 +379,7 @@ blocks:
     bus_structure: null
     coordinate: [806, 266]
     rotation: 0
-    state: true
+    state: enabled
 - name: qtgui_waterfall_sink_x_0_0
   id: qtgui_waterfall_sink_x
   parameters:
@@ -372,7 +408,7 @@ blocks:
     color8: '0'
     color9: '0'
     comment: ''
-    fc: frequency_hertz
+    fc: '0'
     fftsize: '1024'
     freqhalf: 'True'
     grid: 'False'
@@ -392,7 +428,7 @@ blocks:
     legend: 'True'
     maxoutbuf: '0'
     minoutbuf: '0'
-    name: '""'
+    name: '"low pass"'
     nconnections: '1'
     showports: 'False'
     type: complex
@@ -402,7 +438,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1436, 262]
+    coordinate: [1741, 424]
     rotation: 0
     state: enabled
 - name: rtlsdr_source_0
@@ -761,15 +797,16 @@ blocks:
     bus_structure: null
     coordinate: [160, 256]
     rotation: 0
-    state: true
+    state: enabled
 
 connections:
-- [analog_pwr_squelch_xx_0, '0', blocks_complex_to_mag_squared_0, '0']
 - [analog_pwr_squelch_xx_0, '0', blocks_file_sink_0, '0']
-- [analog_pwr_squelch_xx_0, '0', qtgui_waterfall_sink_x_0_0, '0']
+- [analog_pwr_squelch_xx_0, '0', low_pass_filter_0_0, '0']
 - [blocks_complex_to_mag_squared_0, '0', blocks_wavfile_sink_0, '0']
 - [blocks_complex_to_mag_squared_0, '0', qtgui_time_sink_x_0, '0']
-- [blocks_file_source_0, '0', blocks_complex_to_mag_squared_0, '0']
+- [blocks_file_source_0, '0', low_pass_filter_0_0, '0']
+- [low_pass_filter_0_0, '0', blocks_complex_to_mag_squared_0, '0']
+- [low_pass_filter_0_0, '0', qtgui_waterfall_sink_x_0_0, '0']
 - [rtlsdr_source_0, '0', analog_pwr_squelch_xx_0, '0']
 - [rtlsdr_source_0, '0', qtgui_waterfall_sink_x_0, '0']
 
