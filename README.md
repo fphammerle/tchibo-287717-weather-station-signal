@@ -22,7 +22,7 @@ After conversion to binary signal:
 
 ## Decoding
 
-Signal has a [Morse-code-like](https://en.wikipedia.org/wiki/Morse_code) encoding.
+Signal has a [pulse distance encoding](https://www.mikrocontroller.net/articles/IRMP_-_english#Pulse_Distance).
 
 Each transmission contains 6 repeats of the same message.
 
