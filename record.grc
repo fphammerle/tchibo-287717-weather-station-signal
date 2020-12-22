@@ -27,7 +27,7 @@ options:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [159, 79]
+    coordinate: [159, 60]
     rotation: 0
     state: enabled
 
@@ -44,16 +44,16 @@ blocks:
     coordinate: [927, 83]
     rotation: 0
     state: true
-- name: output_filename
+- name: iq_output_filename
   id: variable
   parameters:
     comment: ''
-    value: datetime.datetime.now().astimezone().strftime("%Y%m%dT%H%M%S%z") + "_magnitude-squared_pcm_16bit.wav"
+    value: datetime.datetime.now().astimezone().strftime("%Y%m%dT%H%M%S%z") + "_{}Hz.cf32".format(sample_rate_hertz)
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1221, 129]
+    coordinate: [1632, 130]
     rotation: 0
     state: true
 - name: sample_rate_hertz
@@ -68,6 +68,18 @@ blocks:
     coordinate: [583, 84]
     rotation: 0
     state: enabled
+- name: wav_output_filename
+  id: variable
+  parameters:
+    comment: ''
+    value: datetime.datetime.now().astimezone().strftime("%Y%m%dT%H%M%S%z") + "_magnitude-squared_pcm_16bit.wav"
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1221, 129]
+    rotation: 0
+    state: true
 - name: analog_pwr_squelch_xx_0
   id: analog_pwr_squelch_xx
   parameters:
@@ -85,7 +97,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [769, 475]
+    coordinate: [873, 425]
     rotation: 0
     state: true
 - name: blocks_complex_to_mag_squared_0
@@ -101,7 +113,25 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1163, 600]
+    coordinate: [1278, 592]
+    rotation: 0
+    state: true
+- name: blocks_file_sink_0
+  id: blocks_file_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    append: 'False'
+    comment: ''
+    file: iq_output_filename
+    type: complex
+    unbuffered: 'False'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1443, 403]
     rotation: 0
     state: true
 - name: blocks_wavfile_sink_0
@@ -111,14 +141,14 @@ blocks:
     alias: ''
     bits_per_sample: '16'
     comment: ''
-    file: output_filename
+    file: wav_output_filename
     nchan: '1'
     samp_rate: sample_rate_hertz
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1425, 691]
+    coordinate: [1540, 683]
     rotation: 0
     state: true
 - name: import_0
@@ -131,7 +161,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1229, 55]
+    coordinate: [1224, 46]
     rotation: 0
     state: true
 - name: qtgui_time_sink_x_0
@@ -176,7 +206,7 @@ blocks:
     label7: Signal 7
     label8: Signal 8
     label9: Signal 9
-    legend: 'True'
+    legend: 'False'
     marker1: '-1'
     marker10: '-1'
     marker2: '-1'
@@ -228,7 +258,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1426, 552]
+    coordinate: [1541, 544]
     rotation: 0
     state: true
 - name: qtgui_waterfall_sink_x_0
@@ -289,7 +319,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [802, 254]
+    coordinate: [806, 266]
     rotation: 0
     state: true
 - name: qtgui_waterfall_sink_x_0_0
@@ -350,7 +380,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1192, 403]
+    coordinate: [1436, 262]
     rotation: 0
     state: true
 - name: rtlsdr_source_0
@@ -713,6 +743,7 @@ blocks:
 
 connections:
 - [analog_pwr_squelch_xx_0, '0', blocks_complex_to_mag_squared_0, '0']
+- [analog_pwr_squelch_xx_0, '0', blocks_file_sink_0, '0']
 - [analog_pwr_squelch_xx_0, '0', qtgui_waterfall_sink_x_0_0, '0']
 - [blocks_complex_to_mag_squared_0, '0', blocks_wavfile_sink_0, '0']
 - [blocks_complex_to_mag_squared_0, '0', qtgui_time_sink_x_0, '0']
