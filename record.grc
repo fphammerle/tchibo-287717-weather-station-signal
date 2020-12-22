@@ -41,7 +41,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [919, 81]
+    coordinate: [927, 83]
+    rotation: 0
+    state: true
+- name: output_filename
+  id: variable
+  parameters:
+    comment: ''
+    value: datetime.datetime.now().astimezone().strftime("%Y%m%dT%M%H%S%z") + "_magnitude-squared.wav"
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1221, 129]
     rotation: 0
     state: true
 - name: sample_rate_hertz
@@ -99,7 +111,7 @@ blocks:
     alias: ''
     bits_per_sample: '16'
     comment: ''
-    file: out.wav
+    file: output_filename
     nchan: '1'
     samp_rate: sample_rate_hertz
   states:
@@ -107,6 +119,19 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [1425, 691]
+    rotation: 0
+    state: true
+- name: import_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: import datetime
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1229, 55]
     rotation: 0
     state: true
 - name: qtgui_time_sink_x_0
