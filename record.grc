@@ -99,7 +99,7 @@ blocks:
     bus_structure: null
     coordinate: [873, 425]
     rotation: 0
-    state: true
+    state: enabled
 - name: blocks_complex_to_mag_squared_0
   id: blocks_complex_to_mag_squared
   parameters:
@@ -133,7 +133,29 @@ blocks:
     bus_structure: null
     coordinate: [1443, 403]
     rotation: 0
-    state: true
+    state: enabled
+- name: blocks_file_source_0
+  id: blocks_file_source
+  parameters:
+    affinity: ''
+    alias: ''
+    begin_tag: pmt.PMT_NIL
+    comment: ''
+    file: recordings/20201222T103243+0100_1800000Hz.cf32
+    length: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    repeat: 'False'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [755, 610]
+    rotation: 0
+    state: disabled
 - name: blocks_wavfile_sink_0
   id: blocks_wavfile_sink
   parameters:
@@ -382,7 +404,7 @@ blocks:
     bus_structure: null
     coordinate: [1436, 262]
     rotation: 0
-    state: true
+    state: enabled
 - name: rtlsdr_source_0
   id: rtlsdr_source
   parameters:
@@ -747,6 +769,7 @@ connections:
 - [analog_pwr_squelch_xx_0, '0', qtgui_waterfall_sink_x_0_0, '0']
 - [blocks_complex_to_mag_squared_0, '0', blocks_wavfile_sink_0, '0']
 - [blocks_complex_to_mag_squared_0, '0', qtgui_time_sink_x_0, '0']
+- [blocks_file_source_0, '0', blocks_complex_to_mag_squared_0, '0']
 - [rtlsdr_source_0, '0', analog_pwr_squelch_xx_0, '0']
 - [rtlsdr_source_0, '0', qtgui_waterfall_sink_x_0, '0']
 
