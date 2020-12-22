@@ -28,7 +28,9 @@ Each transmission contains 6 repeats of the same message.
 
 Each messages consists of 42 bits.
 
-Low-bits have a length of 2ms, high-bits 4ms.
+Low-bits have a length of 2ms, high-bits 4ms:
+![bit length](docs/img/20201222T114639+0100_1800000Hz.cf32/inspectrum/short.png)
+![bit length](docs/img/20201222T114639+0100_1800000Hz.cf32/inspectrum/long.png)
 
 We recorded a few transmissions (`recordings/*.wav`)
 and compared the received data with the values indicated on the display (`displayed-values.yml`).
