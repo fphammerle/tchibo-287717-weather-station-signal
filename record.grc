@@ -153,12 +153,12 @@ blocks:
     alias: ''
     begin_tag: pmt.PMT_NIL
     comment: ''
-    file: recordings/20201222T103243+0100_1800000Hz.cf32
+    file: recordings/20201222T114639+0100_1800000Hz.cf32
     length: '0'
     maxoutbuf: '0'
     minoutbuf: '0'
     offset: '0'
-    repeat: 'True'
+    repeat: 'False'
     type: complex
     vlen: '1'
   states:
