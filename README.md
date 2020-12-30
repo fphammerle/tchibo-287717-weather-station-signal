@@ -4,16 +4,17 @@
 
 - **Name**: Tchibo Funk-Wetterstation
 - **Model**: 287717
-- **Frequency** (indicated): 434MHz
+- **Frequency** (indicated): 434 MHz
 - Powered by two 1.5V AAA batteries
 - Contains thermometer and hygrometer
 
 ## Signal
 
 Sensor transmits an [OOK-modulated](https://en.wikipedia.org/wiki/On%E2%80%93off_keying)
-1-second-long signal approximately once every 5 minutes.
+1-second-long signal approximately once every 5 minutes
+on 433.85 MHz.
 
-Recorded with [gqrx](https://gqrx.dk/) via RTL2832U/R820T (433.79MHz, AM):
+Recorded with [gqrx](https://gqrx.dk/) via RTL2832U/R820T (433.79 MHz, AM):
 ![image](docs/img/gqrx_20201217_135504_433790000.silences-shortened-0.1s.wav/entire-signal.svg)
 ![image](docs/img/gqrx_20201217_135504_433790000.silences-shortened-0.1s.wav/message-signal.svg)
 
